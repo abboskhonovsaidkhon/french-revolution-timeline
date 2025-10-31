@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Интерактивный таймлайн — Французская буржуазная революция</title>
+<style>
+  :root{--bg:#0d1b2a;--line:#2a4d69;--accent:#ff7b00;--card:#14233a;--gold:#ffb703}
+  body{font-family:Inter, system-ui, -apple-system, Arial, sans-serif;background:var(--bg);color:#fff;margin:0;padding:24px}
+  h1{text-align:center;margin:8px 0 24px}
+  .wrap{max-width:1000px;margin:0 auto}
+  .timeline{position:relative;padding:40px 20px}
+  /* горизонтальная шкала */
+  .scale{height:6px;background:var(--line);border-radius:6px;position:relative}
+  .node{position:absolute;top:50%;transform:translate(-50%,-50%);cursor:pointer}
+  .node button{background:var(--accent);border:0;padding:8px 12px;border-radius:20px;color:#fff;font-weight:600}
+  .node button:hover{filter:brightness(1.08)}
+  /* инфо-блок */
+  .info{margin-top:24px;background:linear-gradient(180deg, rgba(20,35,58,0.9), rgba(20,35,58,0.8));padding:18px;border-radius:10px;display:flex;gap:18px;align-items:flex-start}
+  .info .year{font-size:20px;color:var(--gold);font-weight:700}
+  .info .text{font-size:15px;line-height:1.5}
+  /* адаптив */
+  @media (max-width:700px){.info{flex-direction:column}}
+  /* подписи под кнопками */
+  .label{position:absolute;top:62%;transform:translate(-50%,0);font-size:12px;color:#cfe3ff}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Интерактивный таймлайн — Французская буржуазная революция (1789–1799)</h1>
+
+    <div class="timeline">
+      <div class="scale" aria-hidden="true"></div>
+
+      <!-- узлы (позиционируются в процентах) -->
+      <div class="node" style="left:5%" data-year="1789" data-title="Созыв Генеральных штатов" data-text="В мае 1789 года Людовик XVI созвал Генеральные штаты для решения финансового кризиса. Это событие стало отправной точкой революции, после которого начался процесс политических изменений и усиления влияния третьего сословия.">
+        <button>1789</button>
+        <div class="label">Созыв Генеральных штатов</div>
+      </div>
+
+      <div class="node" style="left:30%" data-year="14 июля 1789" data-title="Взятие Бастилии" data-text="14 июля 1789 года парижане штурмовали крепость-тюрьму Бастилию — символ королевской тирании. Этот эпизод стал символическим началом массовой революции и празднуется во Франции по сей день.">
+        <button>14.07.1789</button>
+        <div class="label">Взятие Бастилии</div>
+      </div>
+
+      <div class="node" style="left:55%" data-year="1792" data-title="Провозглашение республики" data-text="В 1792 году монархия была свергнута, и была провозглашена Первая французская республика. Страна оказалась втянута в серию войн с европейскими монархиями, что усилило радикализацию внутри республики.">
+        <button>1792</button>
+        <div class="label">Республика</div>
+      </div>
+
+      <div class="node" style="left:75%" data-year="1793–1794" data-title="Якобинская диктатура и Террор" data-text="Период правления якобинцев (Робеспьер) сопровождался массовыми репрессиями против 'врагов революции', казнью Людовика XVI (1793) и организацией жестокого политического террора.">
+        <button>1793–1794</button>
+        <div class="label">Якобинская диктатура</div>
+      </div>
+
+      <div class="node" style="left:95%" data-year="1799" data-title="Переворот 18 брюмера" data-text="9 ноября 1799 года (18 брюмера по революционному календарю) Наполеон Бонапарт совершил переворот, распустил Директорию и установил консульство, что фактически завершило революционный этап и открыло путь к наполеоновской эпохе.">
+        <button>1799</button>
+        <div class="label">Переворот 18 брюмера</div>
+      </div>
+    </div>
+
+    <!-- информационная панель -->
+    <div id="info" class="info" aria-live="polite">
+      <div>
+        <div class="year" id="info-year">Выберите дату</div>
+        <div class="text" id="info-title">Кликни на дату на шкале, чтобы увидеть событие.</div>
+      </div>
+    </div>
+
+  </div>
+
+<script>
+  // Инициализация: найдём все узлы и область показа
+  const nodes = document.querySelectorAll('.node');
+  const infoYear = document.getElementById('info-year');
+  const infoTitle = document.getElementById('info-title');
+
+  nodes.forEach(node => {
+    node.addEventListener('click', () => {
+      const year = node.getAttribute('data-year');
+      const title = node.getAttribute('data-title');
+      const text = node.getAttribute('data-text');
+
+      // Обновляем панель
+      infoYear.textContent = year;
+      infoTitle.innerHTML = `<strong>${title}</strong><p style="margin-top:8px">${text}</p>`;
+
+      // Немного подсветим нажатую кнопку
+      nodes.forEach(n => n.querySelector('button').style.boxShadow = 'none');
+      node.querySelector('button').style.boxShadow = '0 0 0 6px rgba(255,123,0,0.12)';
+    });
+  });
+
+  // Для удобства: можно выделить первый узел при загрузке
+  if(nodes.length) nodes[0].click();
+</script>
+</body>
+</html>
